@@ -3,7 +3,7 @@ const fs = require('fs');
 const path = require('path');
 const config = require("../models/config");
 const log4js = require('koa-log4');
-const utils = require('../lib/utils');
+const utils = require('../libs/utils');
 const logger = log4js.getLogger(config.log.logName);
 
 logger.level = config.log.level

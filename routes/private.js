@@ -7,11 +7,11 @@
 const Router = require('koa-router'),
   router = new Router(),
   privateRouter = new Router(),
-  {privateAuth} = require('../controllers/auth')
+  {setMessage} = require('../controllers/message')
 
 
 router
-  .post('/auth', privateAuth)
+  .post('/msg', setMessage)
 
 privateRouter
   .use('/private', router.routes(), router.allowedMethods())

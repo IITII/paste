@@ -2,10 +2,10 @@
 const Router = require('koa-router'),
   router = new Router(),
   publicRouter = new Router(),
-  {publicAuth} = require('../controllers/auth')
+  {getMessage} = require('../controllers/message')
 
 router
-  .post('/auth', publicAuth)
+  .get('/msg', getMessage)
 
 publicRouter
   .use('/public', router.routes(), router.allowedMethods())
