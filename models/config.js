@@ -7,5 +7,9 @@ let config = {
     logPath: path.resolve(__dirname, process.env.LOGGER_PATH || '../logs/log.log'),
     logLevel: process.env.LOGGER_LEVEL || 'debug'
   },
+  redis: {
+    host: process.env.REDIS_HOST || 'localhost',
+    port: process.env.REDIS_PORT || 6379
+  }
 }
 module.exports = config;
