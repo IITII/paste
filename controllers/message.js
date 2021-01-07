@@ -8,11 +8,11 @@ const uuid = require('uuid'),
   redis_op = require('../libs/redis_op')
 
 async function getMessage(ctx) {
-  const reqBody = ctx.request.body
-  if (reqBody.hasOwnProperty('token')) {
-    if (uuid.validate(reqBody.token)) {
+  const token = ctx.request.query['token']
+  if (token !== undefined) {
+    if (uuid.validate(token)) {
       return await redis_op
-        .get(reqBody.token)
+        .get(token)
         .then(res => {
           setResponse(ctx, 200, res)
         })

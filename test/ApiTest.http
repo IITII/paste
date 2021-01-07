@@ -14,3 +14,15 @@ Content-Type: application/json
 
 {}
 
+
+### POST Private msg
+POST http://localhost:3000/private/msg
+Content-Type: application/json
+
+{
+  "msg": "msg"
+}
+
+### GET Public msg
+GET http://localhost:3000/public/msg?token=c94a8380-010a-4e84-b75d-6b9269dca4a9
+Accept: application/json

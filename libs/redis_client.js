@@ -8,4 +8,6 @@ const redis = require('redis'),
   config = require('../models/config'),
   client = redis.createClient(config.redis)
 
-module.exports = client
+module.exports = {
+  client
+}
