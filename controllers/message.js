@@ -29,7 +29,7 @@ async function getMessage(ctx) {
 
 async function setMessage(ctx) {
   const reqBody = ctx.request.body
-//   if (reqBody.hasOwnProperty('msg')) {
+  if (reqBody.hasOwnProperty('msg')) {
     const token = uuid.v4()
     return await redis_op.set(token, reqBody.msg)
       .then(() => {
@@ -40,9 +40,9 @@ async function setMessage(ctx) {
       .catch(e => {
         setResponse(ctx, 500, e.message)
       })
-//   } else {
-//     setResponse(ctx, 404, 'Required "msg" ...')
-//   }
+  } else {
+    setResponse(ctx, 404, 'Required "msg" ...')
+  }
 }
 
 module.exports = {
