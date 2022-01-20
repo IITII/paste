@@ -2,7 +2,8 @@
 
 const ApiGateway = require('moleculer-web'),
 	{UnAuthorizedError, ForbiddenError} = ApiGateway.Errors,
-	{pick} = require('lodash')
+	{pick} = require('lodash'),
+	config = require('../common.config')
 
 /**
  * @typedef {import('moleculer').Context} Context Moleculer's Context
@@ -17,7 +18,7 @@ module.exports = {
 	// More info about settings: https://moleculer.services/docs/0.14/moleculer-web.html
 	settings: {
 		// Exposed port
-		port: process.env.PASTE_PORT || 3000,
+		port: process.env.PASTE_PORT || config.api.port || 3000,
 
 		// Exposed IP
 		ip: '0.0.0.0',
@@ -43,7 +44,7 @@ module.exports = {
 			// Configures the Access-Control-Allow-Credentials CORS header.
 			credentials: false,
 			// Configures the Access-Control-Max-Age CORS header.
-			maxAge: 3600
+			maxAge: 3600,
 		},
 
 		routes: [
@@ -53,6 +54,7 @@ module.exports = {
 				autoAliases: true,
 				whitelist: [
 					'user.login', 'user.tokenLogin',
+					'paste.*',
 				],
 				aliases: {},
 				mappingPolicy: 'restrict', logging: true, mergeParams: true,
@@ -62,7 +64,7 @@ module.exports = {
 					key: (req) => {
 						return req.headers['x-forwarded-for'] || req.connection.remoteAddress ||
 							req.socket.remoteAddress || req.connection.socket.remoteAddress
-					}
+					},
 				},
 			},
 			{
@@ -78,21 +80,21 @@ module.exports = {
 				// admin and maintainer, no limit
 				path: '/admin', meta: {roles: ['admin']},
 				whitelist: [
-					'user.create'
+					'user.create',
 				],
 				logging: true,
 				mergeParams: true, authorization: true,
 				autoAliases: true, mappingPolicy: 'all',
 				bodyParsers: {
 					json: {strict: false, limit: '5MB'},
-					urlencoded: {extended: true, limit: '5MB'}
+					urlencoded: {extended: true, limit: '5MB'},
 				},
 			},
 			{
 				path: '/api', meta: {roles: ['admin', 'user']},
 
 				whitelist: [
-					'paste.*'
+					'paste.*',
 				],
 
 				rateLimit: {
@@ -101,7 +103,7 @@ module.exports = {
 					key: (req) => {
 						return req.headers['x-forwarded-for'] || req.connection.remoteAddress ||
 							req.socket.remoteAddress || req.connection.socket.remoteAddress
-					}
+					},
 				},
 				// Route-level Express middlewares. More info: https://moleculer.services/docs/0.14/moleculer-web.html#Middlewares
 				use: [],
@@ -152,20 +154,20 @@ module.exports = {
 				bodyParsers: {
 					json: {
 						strict: false,
-						limit: '10MB'
+						limit: '10MB',
 					},
 					urlencoded: {
 						extended: true,
-						limit: '10MB'
-					}
+						limit: '10MB',
+					},
 				},
 
 				// Mapping policy setting. More info: https://moleculer.services/docs/0.14/moleculer-web.html#Mapping-policy
 				mappingPolicy: 'all', // Available values: "all", "restrict"
 
 				// Enable/disable logging
-				logging: true
-			}
+				logging: true,
+			},
 		],
 		onError(req, res, err) {
 			// Return with the error as JSON object
@@ -197,8 +199,8 @@ module.exports = {
 			folder: 'public',
 
 			// Options to `server-static` module
-			options: {}
-		}
+			options: {},
+		},
 	},
 
 	methods: {
@@ -270,6 +272,6 @@ module.exports = {
 				this.logger.warn(`${route.opts.path}'s meta property is missing...`)
 				// no need auth, go next
 			}
-		}
-	}
+		},
+	},
 }
