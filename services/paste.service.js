@@ -42,13 +42,24 @@ module.exports = {
 			},
 			async handler(ctx) {
 				let {token, msg} = ctx.params
-				if (token) {
+				if (!token) {
 					token = uuid.v4()
 				}
 				await redis.set(token, msg)
 				return {token}
 			}
 		},
+		post_url: {
+			rest: 'POST /url',
+			params: {
+				token: {type: 'string', min: 3, optional: true},
+				msg: {type: 'string', min: 1},
+			},
+			async handler(ctx) {
+				const res = await this.broker.call('paste.post_msg', ctx.params)
+				return res.token
+			}
+		}
 	},
 
 	/**

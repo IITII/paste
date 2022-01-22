@@ -4,7 +4,7 @@
  */
 'use strict'
 
-const redis = require('redis'),
+const redis = require('ioredis'),
 	config = require('../common.config.js'),
 	client = redis.createClient(config.redis)
 

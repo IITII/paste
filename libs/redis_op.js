@@ -15,6 +15,7 @@ async function send_command(command, args) {
 	return await new Promise((resolve, reject) => {
 		client.send_command(command, args, (err, value) => {
 			if (err) {
+				console.error(err)
 				return reject(args[0])
 			} else {
 				return resolve(value)
