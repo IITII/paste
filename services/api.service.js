@@ -66,6 +66,10 @@ module.exports = {
 							req.socket.remoteAddress || req.connection.socket.remoteAddress
 					},
 				},
+				bodyParsers: {
+					json: {strict: false, limit: '3MB'},
+					urlencoded: {extended: true, limit: '3MB'},
+				},
 			},
 			{
 				// admin only, no limit
@@ -75,6 +79,10 @@ module.exports = {
 				mergeParams: true, logging: true,
 				authentication: false, authorization: true,
 				autoAliases: true, mappingPolicy: 'all',
+				bodyParsers: {
+					json: {strict: false, limit: '500MB'},
+					urlencoded: {extended: true, limit: '500MB'},
+				},
 			},
 			{
 				// admin and maintainer, no limit
