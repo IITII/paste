@@ -31,6 +31,7 @@ module.exports = {
 			},
 			async handler(ctx) {
 				const {token} = ctx.params
+				ctx.meta.$responseType = 'text/plain'
 				return redis.get(token)
 			}
 		},
